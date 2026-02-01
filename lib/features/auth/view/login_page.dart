@@ -1,85 +1,78 @@
-import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
+import "package:flutter/material.dart";
+import "../../../core/constants/app_colors.dart";
 
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
-      ),
+      backgroundColor: AppColors.backgroundWhite,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 70,
+              radius: 50,
               backgroundColor: AppColors.primaryBlue,
-              child: Icon(Icons.school,size: 60,color: Colors.white,),
+              child: Icon(Icons.school, size: 50, color: Colors.white),
             ),
-            SizedBox(height: 20,),
-            Image.asset(
-              'images/assets/imalem.png',
-              width: 150,
-              height: 50,
-              fit: BoxFit.contain,
-            ),
-            SizedBox(height: 8,),
+            SizedBox(height: 15),
             Text(
-              'doorgo kosh kelding',
+              'Доорго кош  келиңиз!',
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              'Сынак тапшыруу үчүн платформага кириниз',
               style: TextStyle(color: AppColors.grayText),
             ),
-            SizedBox(height: 15,),
-            Text(
-              'Logo',
-              style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 15,),
+            SizedBox(height: 30),
             TextField(
               decoration: InputDecoration(
-                hintText: 'Syr Soz',
+                hintText: 'Логин',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                )
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(height: 15),
             TextField(
               obscureText: true,
               decoration: InputDecoration(
-                hintText: 'sddffbdf',
+                hintText: 'Сыр сөз',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                )
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            SizedBox(height: 15,),
+            SizedBox(height: 25),
             SizedBox(
               width: double.infinity,
-              height: 60,
+              height: 50,
               child: ElevatedButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, 'register');
+                onPressed: () {
+                 Navigator.pushNamed(context, '/register');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBlue,
-                  shape:RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)
-                  )),
-                 child: Text(
-                  'kiruu',
-                  style: TextStyle(color: Colors.white,fontSize: 18),
-                )),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'Кирүү',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
             ),
             TextButton(
-              onPressed: (){}, 
+              onPressed: () {},
               child: Text(
-                'akountunuz',
+                'Аккаунтуңуз жокпу? Катталыңыз',
                 style: TextStyle(color: AppColors.primaryBlue),
-              ))
+              ),
+            ),
           ],
         ),
       ),

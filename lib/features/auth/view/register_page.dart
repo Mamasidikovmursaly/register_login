@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
+import "package:flutter/material.dart";
+import "../../../core/constants/app_colors.dart";
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -8,111 +8,148 @@ class RegisterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      // 1. AppBar - артка кайтуу иконкасы менен
       appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
+        backgroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent, // Скроллдо түс өзгөрбөйт
         leading: IconButton(
-          splashColor: Colors.transparent,
+          splashColor: Colors.transparent, // Көлөкө калбашы үчүн
           highlightColor: Colors.transparent,
-          icon: const Icon(Icons.arrow_back_ios, size: 20, color: Colors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () => Navigator.pop(context),
         ),
       ),
+      // 2. Негизги бөлүк
       body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
+        // Эгер экран жылбасын десеңиз NeverScrollable калтырыңыз
+        physics: const NeverScrollableScrollPhysics(), 
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 0.0,),
+          // vertical боштукту 0 кылдык, мазмун эң өйдө жайгашат
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
           child: Column(
             children: [
+              // 1. Логотип (Скриншоттогудай көк тегерек жана ак иконка)
               CircleAvatar(
                 radius: 50,
                 backgroundColor: AppColors.primaryBlue,
-                child: const Icon(Icons.school,
-                size: 60,
-                color:Colors.white),
+                child: const Icon(
+                  Icons.school, 
+                  size: 60, // Иконканы чоңойттук
+                  color: Colors.white,
+                ),
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(height: 15),
+
+              // 2. Башкы тексттер
               const Text(
-                'katalu',
-                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,
-                color: Colors.black),
+                'Катталуу',
+                style: TextStyle(
+                  fontSize: 24, 
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-              const SizedBox(height: 8,),
+              const SizedBox(height: 8),
               const Text(
-                'totmndogu malymst',
-                style: TextStyle(fontSize: 14,
-                color: Colors.grey),
+                'Төмөндөгү маалыматты толтуруңуз',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
               ),
-              const SizedBox(height: 15,),
+              const SizedBox(height: 20),
+
+              // 3. Маалымат толтуруучу талаалар (TextFields)
               const TextField(
                 decoration: InputDecoration(
-                  labelText: 'Aty',
+                  labelText: "Аты",
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 20,),
-              TextField(
+              const SizedBox(height: 15),
+              const TextField(
                 decoration: InputDecoration(
-                  labelText: 'cdsfgsgfdb',
+                  labelText: 'Фамилия',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15,),
-              TextField(
+              const SizedBox(height: 15),
+              const TextField(
+                // Телефон номери жашыруун болбошу керек (obscureText алып салынды)
+                keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
-                 labelText: 'shfdsfd',
+                  labelText: 'Телефон номери',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15,),
-              TextField(
+              const SizedBox(height: 15),
+              const TextField(
                 decoration: InputDecoration(
-                  labelText: 'sdgfdshfdafga',
-                  border: OutlineInputBorder()
+                  labelText: 'Логин',
+                  border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15,),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'ttttt',
-                  border: OutlineInputBorder()
-                ),
-              ),
-              SizedBox(height: 15,),
-              TextField(
+              const SizedBox(height: 15),
+              const TextField(
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: 'sdgdfgdbdfs',
-                  border: OutlineInputBorder()
+                  labelText: 'Сыр сөз',
+                  border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15),
+              const TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Сыр сөздү кайрадан жазыңыз',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // 4. Катталуу баскычы
               SizedBox(
                 width: double.infinity,
-                height: 50,
+                height: 55, // Бир аз бийиктик коштук
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.popAndPushNamed(context, '/register');
+                    // Каттоо логикасы ушул жерге жазылат
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBlue,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadiusGeometry.circular(10)
-                    )),
-                   child: Text('katalu',
-                   style: TextStyle(color: Colors.white,
-                   fontSize: 18,fontWeight: FontWeight.bold),)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    "Катталуу",
+                    style: TextStyle(
+                      color: Colors.white, 
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
+
+              // 5. Төмөнкү өтүү баскычы
               TextButton(
-                onPressed: () {}, 
-                child: Text('akaun',
-                style: TextStyle(color: AppColors.primaryBlue),))
+                onPressed: () {},
+                child: const Text(
+                  'Аккаунтуңуз барбы? Кириңиз',
+                  style: TextStyle(
+                    color: AppColors.primaryBlue,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
             ],
-          ), 
+          ),
         ),
       ),
     );
   }
 }
+

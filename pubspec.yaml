@@ -20,9 +20,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  # Сүрөттөрдү кошуу бөлүмү:
-  assets:
-    - assets/images/imalem.png
-    # Эгер папкадагы бардык сүрөттөрдү кошкуңуз келсе, мындай жазсаңыз болот:
-    # - images/assets/
