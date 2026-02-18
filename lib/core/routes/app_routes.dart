@@ -8,6 +8,6 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> routes = {
     login: (context) => LoginPage(),
-    register: (context) => const RegisterPage(),
+    register: (context) => RegisterPage(),
   };
 }

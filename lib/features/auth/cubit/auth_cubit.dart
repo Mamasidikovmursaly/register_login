@@ -1,15 +1,32 @@
-import "package:flutter_bloc/flutter_bloc.dart";
-import "auth_state.dart";
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
 
-  void login(String login, String password) {
-    emit(AuthLoading()); // 1. Биринчи "Loading" (Жүктөө) сигналын берет. Экранда тегерекче айлана баштайт.
-    if (login == 'admin' && password == '123') {
-      emit(AuthSuccess());// 2. Эгер маалымат туура болсо, "Success" сигналын берет. UI муну угуп, кийинки баракка өткөрөт.
+  Future<void> login(String login, String password) async {
+    emit(AuthLoading());
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (login == "1234" && password == "1234") {
+      emit(AuthSuccess());
     } else {
-      emit(AuthError("Логин же сыр сөз ката!"));// 3. Эгер ката болсо, ката билдирүүсүн жөнөтөт. UI муну кызыл жазуу менен чыгарат.
+      emit(AuthError("Логин же сыр сөз туура эмес"));
     }
+  }
+
+  Future<void> register(
+      String name,
+      String surname,
+      String phone,
+      String login,
+      String password,
+      ) async {
+    emit(AuthLoading());
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    emit(AuthSuccess());
   }
 }

@@ -1,155 +1,175 @@
-import "package:flutter/material.dart";
-import "../../../core/constants/app_colors.dart";
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:register_login/core/routes/app_routes.dart';
+import '../../../core/constants/app_colors.dart';
+import '../cubit/auth_cubit.dart';
+import '../cubit/auth_state.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({super.key});
+  RegisterPage({super.key});
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController surnameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController loginController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+        TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      // 1. AppBar - артка кайтуу иконкасы менен
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent, // Скроллдо түс өзгөрбөйт
-        leading: IconButton(
-          splashColor: Colors.transparent, // Көлөкө калбашы үчүн
-          highlightColor: Colors.transparent,
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () => Navigator.pop(context),
+      body: SafeArea(
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Каттоо ийгиликтүү!"),
+                  backgroundColor: Colors.green,
+                ),
+              );
+
+              if (Navigator.canPop(context)) {
+                Navigator.pop(context);
+              } else {
+                Navigator.pushReplacementNamed(context, AppRoutes.login);
+              }
+            }
+          },
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundColor: AppColors.primaryBlue,
+                    child: const Icon(
+                      Icons.school,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Катталуу',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Төмөндөгү маалыматты толтуруңуз',
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
+                  const SizedBox(height: 25),
+
+                  _buildField(nameController, 'Аты'),
+                  _buildField(surnameController, 'Фамилия'),
+                  _buildField(phoneController, '+996 776 800 082', keyboardType: TextInputType.phone,),
+                  _buildField(loginController, 'Логин'),
+                  _buildField(passwordController, 'Сыр сөз', isObscure: true),
+                  _buildField(confirmPasswordController,'Сыр сөздү кайрадан жазыңыз',isObscure: true,),
+
+                  const SizedBox(height: 20),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 55,
+                    child: state is AuthLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: () {
+                              if (nameController.text.isEmpty ||
+                                  loginController.text.isEmpty ||
+                                  phoneController.text.isEmpty ||
+                                  passwordController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Бардык талааларды толтуруңуз!',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+                              
+                              if (passwordController.text !=
+                                  confirmPasswordController.text) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Сыр сөздөр бири-бирине дал келбейт!',
+                                    ),
+                                  ),
+                                );
+                                return;
+                              }
+                              
+                              context.read<AuthCubit>().register(
+                                nameController.text,
+                                surnameController.text,
+                                phoneController.text,
+                                loginController.text,
+                                passwordController.text,
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryBlue,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text(
+                              "Катталуу",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, AppRoutes.login);
+                    },
+                    child: Text(
+                      "Аккаунт барбы? Кириңиз",
+                      style: TextStyle(color: AppColors.primaryBlue),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            );
+          },
         ),
       ),
-      // 2. Негизги бөлүк
-      body: SingleChildScrollView(
-        // Эгер экран жылбасын десеңиз NeverScrollable калтырыңыз
-        physics: const NeverScrollableScrollPhysics(), 
-        child: Padding(
-          // vertical боштукту 0 кылдык, мазмун эң өйдө жайгашат
-          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 0.0),
-          child: Column(
-            children: [
-              // 1. Логотип (Скриншоттогудай көк тегерек жана ак иконка)
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: AppColors.primaryBlue,
-                child: const Icon(
-                  Icons.school, 
-                  size: 60, // Иконканы чоңойттук
-                  color: Colors.white,
-                ),
-              ),
-              const SizedBox(height: 15),
+    );
+  }
 
-              // 2. Башкы тексттер
-              const Text(
-                'Катталуу',
-                style: TextStyle(
-                  fontSize: 24, 
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Төмөндөгү маалыматты толтуруңуз',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-              const SizedBox(height: 20),
-
-              // 3. Маалымат толтуруучу талаалар (TextFields)
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: "Аты",
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Фамилия',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                // Телефон номери жашыруун болбошу керек (obscureText алып салынды)
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: 'Телефон номери',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                decoration: InputDecoration(
-                  labelText: 'Логин',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Сыр сөз',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-              const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Сыр сөздү кайрадан жазыңыз',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              // 4. Катталуу баскычы
-              SizedBox(
-                width: double.infinity,
-                height: 55, // Бир аз бийиктик коштук
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Каттоо логикасы ушул жерге жазылат
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryBlue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text(
-                    "Катталуу",
-                    style: TextStyle(
-                      color: Colors.white, 
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-
-              // 5. Төмөнкү өтүү баскычы
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Аккаунтуңуз барбы? Кириңиз',
-                  style: TextStyle(
-                    color: AppColors.primaryBlue,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
+  Widget _buildField(
+    TextEditingController controller,
+    String hint, {
+    bool isObscure = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextField(
+        controller: controller,
+        obscureText: isObscure,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          hintText: hint,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
       ),
     );
   }
 }
-
