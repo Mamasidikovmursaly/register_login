@@ -9,7 +9,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    if (login == "1234" && password == "1234") {
+    if (login == "1111" && password == "1111") {
       emit(AuthSuccess());
     } else {
       emit(AuthError("Логин же сыр сөз туура эмес"));

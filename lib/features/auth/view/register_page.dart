@@ -13,8 +13,7 @@ class RegisterPage extends StatelessWidget {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-        TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +23,15 @@ class RegisterPage extends StatelessWidget {
         child: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text("Каттоо ийгиликтүү!"),
-                  backgroundColor: Colors.green,
-                ),
-              );
-
+              _showMsg(context, "Каттоо ийгиликтүү!", Colors.green);
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               } else {
                 Navigator.pushReplacementNamed(context, AppRoutes.login);
               }
+            }
+            if (state is AuthError) {
+              _showMsg(context, state.message, Colors.red);
             }
           },
           builder: (context, state) {
@@ -47,30 +43,18 @@ class RegisterPage extends StatelessWidget {
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: AppColors.primaryBlue,
-                    child: const Icon(
-                      Icons.school,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                    child: const Icon(Icons.school, size: 50, color: Colors.white),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
-                    'Катталуу',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Төмөндөгү маалыматты толтуруңуз',
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
+                  const Text('Катталуу', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 25),
 
                   _buildField(nameController, 'Аты'),
                   _buildField(surnameController, 'Фамилия'),
-                  _buildField(phoneController, '+996 776 800 082', keyboardType: TextInputType.phone,),
+                  _buildField(phoneController, 'Телефон (мис: 776800082)', keyboardType: TextInputType.phone),
                   _buildField(loginController, 'Логин'),
                   _buildField(passwordController, 'Сыр сөз', isObscure: true),
-                  _buildField(confirmPasswordController,'Сыр сөздү кайрадан жазыңыз',isObscure: true,),
+                  _buildField(confirmPasswordController, 'Сыр сөздү кайра жазыңыз', isObscure: true),
 
                   const SizedBox(height: 20),
 
@@ -81,69 +65,63 @@ class RegisterPage extends StatelessWidget {
                         ? const Center(child: CircularProgressIndicator())
                         : ElevatedButton(
                             onPressed: () {
-                              if (nameController.text.isEmpty ||
-                                  loginController.text.isEmpty ||
-                                  phoneController.text.isEmpty ||
-                                  passwordController.text.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Бардык талааларды толтуруңуз!',
-                                    ),
-                                  ),
-                                );
+                              final name = nameController.text.trim();
+                              final surname = surnameController.text.trim();
+                              final phone = phoneController.text.trim();
+                              final login = loginController.text.trim();
+                              final password = passwordController.text.trim();
+                              final confirmPass = confirmPasswordController.text.trim();
+
+                              // 1. БОШ ТАЛААЛАР
+                              if (name.isEmpty || surname.isEmpty || phone.isEmpty || login.isEmpty || password.isEmpty) {
+                                _showMsg(context, "Бардык талааларды толтуруңуз!", Colors.orange);
                                 return;
                               }
-                              
-                              if (passwordController.text !=
-                                  confirmPasswordController.text) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Сыр сөздөр бири-бирине дал келбейт!',
-                                    ),
-                                  ),
-                                );
+
+                              // 2. АТЫ-ЖӨНҮ (кеминде 2 тамга)
+                              if (name.length < 2 || surname.length < 2) {
+                                _showMsg(context, "Аты-жөнүңүздү толук жазыңыз!", Colors.red);
                                 return;
                               }
-                              
-                              context.read<AuthCubit>().register(
-                                nameController.text,
-                                surnameController.text,
-                                phoneController.text,
-                                loginController.text,
-                                passwordController.text,
-                              );
+
+                              // 3. ТЕЛЕФОН (9 символ)
+                              if (phone.length < 9) {
+                                _showMsg(context, "Телефон номери кеминде 9 символ болушу керек!", Colors.red);
+                                return;
+                              }
+
+                              // 4. ЛОГИН (4 символ)
+                              if (login.length < 4) {
+                                _showMsg(context, "Логин кеминде 4 символ болушу керек!", Colors.red);
+                                return;
+                              }
+
+                              // 5. СЫР СӨЗ (6 символ)
+                              if (password.length < 6) {
+                                _showMsg(context, "Сыр сөз кеминде 6 символ болушу керек!", Colors.red);
+                                return;
+                              }
+
+                              // 6. ДАЛ КЕЛҮҮСҮ
+                              if (password != confirmPass) {
+                                _showMsg(context, "Сыр сөздөр бири-бирине дал келбейт!", Colors.red);
+                                return;
+                              }
+
+                              context.read<AuthCubit>().register(name, surname, phone, login, password);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                            child: const Text(
-                              "Катталуу",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
+                            child: const Text("Катталуу", style: TextStyle(fontSize: 18, color: Colors.white)),
                           ),
                   ),
-
                   const SizedBox(height: 15),
-
-                
                   TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, AppRoutes.login);
-                    },
-                    child: Text(
-                      "Аккаунт барбы? Кириңиз",
-                      style: TextStyle(color: AppColors.primaryBlue),
-                    ),
+                    onPressed: () => Navigator.pushReplacementNamed(context, AppRoutes.login),
+                    child: const Text("Аккаунт барбы? Кириңиз", style: TextStyle(color: AppColors.primaryBlue)),
                   ),
-                  const SizedBox(height: 20),
                 ],
               ),
             );
@@ -153,12 +131,13 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  Widget _buildField(
-    TextEditingController controller,
-    String hint, {
-    bool isObscure = false,
-    TextInputType keyboardType = TextInputType.text,
-  }) {
+  void _showMsg(BuildContext context, String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: color, duration: const Duration(seconds: 2)),
+    );
+  }
+
+  Widget _buildField(TextEditingController controller, String hint, {bool isObscure = false, TextInputType keyboardType = TextInputType.text}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextField(
