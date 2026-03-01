@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:register_login/core/routes/app_routes.dart';
 
 class SplashPage extends StatefulWidget{
   const SplashPage({super.key});
@@ -13,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     Future.delayed(const Duration(seconds: 2),() {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
       }
     });
   }
