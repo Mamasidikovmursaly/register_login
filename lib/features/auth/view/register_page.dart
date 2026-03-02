@@ -96,11 +96,11 @@ class RegisterPage extends StatelessWidget {
                     child: state.isLoading
                         ? const Center(child: CircularProgressIndicator())
                         : ElevatedButton(
-                            onPressed: _isFormValid(state)
-                                ? () => context.read<AuthBloc>().add(
-                                    RegisterSubmitted(),
-                                  )
-                                : null,
+                            // Текшерүүсүз эле ивентти жөнөтөбүз
+                            onPressed: () => context.read<AuthBloc>().add(
+                              RegisterSubmitted(),
+                            ),
+
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue,
 
@@ -143,18 +143,25 @@ class RegisterPage extends StatelessWidget {
   }
 
   bool _isFormValid(AuthState state) {
-    return state.name.isNotEmpty &&
+    // 1. Бардык талаалар толтурулганбы?
+    final allFilled =
+        state.name.isNotEmpty &&
         state.surname.isNotEmpty &&
         state.phone.isNotEmpty &&
         state.login.isNotEmpty &&
         state.password.isNotEmpty &&
-        state.confirmPassword.isNotEmpty &&
+        state.confirmPassword.isNotEmpty;
+
+    // 2. Эч кандай ката (error) жокпу?
+    final noErrors =
         state.nameError.isEmpty &&
         state.surnameError.isEmpty &&
         state.phoneError.isEmpty &&
         state.loginError.isEmpty &&
         state.passwordError.isEmpty &&
         state.confirmPasswordError.isEmpty;
+
+    return allFilled && noErrors;
   }
 
   Widget _buildAnimatedField({

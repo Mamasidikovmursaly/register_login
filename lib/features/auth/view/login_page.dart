@@ -67,13 +67,10 @@ class LoginPage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 8,),
+                    const SizedBox(height: 8),
                     const Text(
                       'Сынак тапшыруу үчүн платформага кириңиз',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: AppColors.grayText,
-                      ),
+                      style: TextStyle(fontSize: 14, color: AppColors.grayText),
                     ),
                     const SizedBox(height: 30),
 
@@ -117,10 +114,10 @@ class LoginPage extends StatelessWidget {
                           ? const Center(child: CircularProgressIndicator())
                           : ElevatedButton(
                               onPressed:
-                                  (state.loginError.isEmpty &&
-                                      state.passwordError.isEmpty &&
-                                      state.login.isNotEmpty &&
-                                      state.password.isNotEmpty)
+                                  (state.login.isNotEmpty &&
+                                      state.password.isNotEmpty &&
+                                      state.loginError.isEmpty &&
+                                      state.passwordError.isEmpty)
                                   ? () {
                                       context.read<AuthBloc>().add(
                                         LoginSubmitted(),
