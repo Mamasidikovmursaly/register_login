@@ -41,25 +41,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<LoginChanged>((event, emit) {
-      final login = event.login.trim();
-      String error = '';
-      if (login.isEmpty) {
-        error = 'Логинди жазыңыз';
-      }
-      emit(state.copyWith(login: login, loginError: error, isSuccess: false));
-    });
+  final login = event.login.trim();
+  String error = '';
+  bool isValid = true;
 
-    on<LoginSubmitted>((event, emit) async {
-      emit(state.copyWith(isLoading: true)); 
+  if (login.isEmpty) {
+    error = 'Логинди жазыңыз';
+    isValid = false;
+  } else if (login.length < 6) { 
+    error = 'Логин эң аз 6 белги болушу керек';
+    isValid = false;
+  }
 
-      try {
-        print("Кирүү баскычы иштеди: ${state.login}");
-
-        emit(state.copyWith(isLoading: false, isSuccess: true));
-      } catch (e) {
-        emit(state.copyWith(isLoading: false, errorMessage: "Ката кетти!"));
-      }
-    });
+  emit(state.copyWith(
+    login: login,
+    loginError: error,      
+    isLoginValid: isValid,  
+    isSuccess: false,
+  ));
+});
 
     on<PasswordChanged>((event, emit) {
       final password = event.password;

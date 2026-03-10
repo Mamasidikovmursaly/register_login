@@ -1,13 +1,12 @@
 import 'package:equatable/equatable.dart';
 
 class AuthState extends Equatable {
-  
   final String login;
   final String loginError;
   final String password;
   final String passwordError;
-  
-  
+  final bool isLoginValid; // Бул жерде бар, жакшы
+
   final String name;
   final String nameError;
   final String surname;
@@ -16,14 +15,13 @@ class AuthState extends Equatable {
   final String phoneError;
   final String confirmPassword;
   final String confirmPasswordError;
-  
-  
+
   final String errorMessage;
   final bool isLoading;
   final bool isSuccess;
 
-  
   const AuthState({
+    this.isLoginValid = true,
     this.login = '',
     this.loginError = '',
     this.password = '',
@@ -41,13 +39,13 @@ class AuthState extends Equatable {
     this.isSuccess = false,
   });
 
-  
   @override
   List<Object?> get props => [
         login,
         loginError,
         password,
         passwordError,
+        isLoginValid, // МИНДЕТТҮҮ: Бул жерге кошуу керек!
         name,
         nameError,
         surname,
@@ -61,12 +59,12 @@ class AuthState extends Equatable {
         isSuccess,
       ];
 
-  
   AuthState copyWith({
     String? login,
     String? loginError,
     String? password,
     String? passwordError,
+    bool? isLoginValid, // МИНДЕТТҮҮ: copyWith ичине кошуу керек
     String? name,
     String? nameError,
     String? surname,
@@ -84,6 +82,7 @@ class AuthState extends Equatable {
       loginError: loginError ?? this.loginError,
       password: password ?? this.password,
       passwordError: passwordError ?? this.passwordError,
+      isLoginValid: isLoginValid ?? this.isLoginValid, // Бул жерди жаңыртуу
       name: name ?? this.name,
       nameError: nameError ?? this.nameError,
       surname: surname ?? this.surname,
