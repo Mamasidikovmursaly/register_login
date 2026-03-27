@@ -32,7 +32,6 @@ class LoginPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 60),
 
-                  /// ЛОГО
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: AppColors.primaryBlue,
@@ -45,28 +44,20 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 25),
 
-                  /// TITLE
                   const Text(
                     "Доорго кош келиңиз!",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
 
                   const SizedBox(height: 8),
 
                   const Text(
                     "Сынак тапшыруу үчүн платформага кириңиз",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey,
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
 
                   const SizedBox(height: 40),
 
-                  /// ЛОГИН
                   _buildInput(
                     label: "Логин",
                     hint: "Логин жазыңыз",
@@ -79,7 +70,6 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  /// PASSWORD
                   _buildInput(
                     label: "Сыр сөз",
                     hint: "Сыр сөз жазыңыз",
@@ -93,7 +83,6 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 35),
 
-                  /// КИРҮҮ БАСМАСЫ
                   SizedBox(
                     width: double.infinity,
                     height: 55,
@@ -102,15 +91,15 @@ class LoginPage extends StatelessWidget {
                         : ElevatedButton(
                             onPressed: _formValid(state)
                                 ? () {
-                                    context
-                                        .read<AuthBloc>()
-                                        .add(LoginSubmitted());
+                                    context.read<AuthBloc>().add(
+                                      LoginSubmitted(),
+                                    );
                                   }
                                 : null,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primaryBlue,
-                              disabledBackgroundColor:
-                                  AppColors.primaryBlue.withOpacity(0.4),
+                              disabledBackgroundColor: AppColors.primaryBlue
+                                  .withOpacity(0.4),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -128,14 +117,11 @@ class LoginPage extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  /// REGISTER
                   TextButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) =>  RegisterPage(),
-                        ),
+                        MaterialPageRoute(builder: (context) => RegisterPage()),
                       );
                     },
                     child: const Text(
@@ -155,7 +141,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  /// LOGIN VALIDATION
   static String? _loginError(String value) {
     if (value.isEmpty) return null;
 
@@ -172,7 +157,6 @@ class LoginPage extends StatelessWidget {
     return null;
   }
 
-  /// PASSWORD VALIDATION
   static String? _passwordError(String value) {
     if (value.isEmpty) return null;
 
@@ -183,7 +167,6 @@ class LoginPage extends StatelessWidget {
     return null;
   }
 
-  /// FORM CHECK
   static bool _formValid(AuthState state) {
     return _loginError(state.login) == null &&
         _passwordError(state.password) == null &&
@@ -191,7 +174,6 @@ class LoginPage extends StatelessWidget {
         state.password.isNotEmpty;
   }
 
-  /// INPUT FIELD
   static Widget _buildInput({
     required String label,
     required String hint,
@@ -240,10 +222,7 @@ class LoginPage extends StatelessWidget {
 
         errorText: showError ? errorText : null,
 
-        errorStyle: const TextStyle(
-          color: Colors.red,
-          fontSize: 12,
-        ),
+        errorStyle: const TextStyle(color: Colors.red, fontSize: 12),
 
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,

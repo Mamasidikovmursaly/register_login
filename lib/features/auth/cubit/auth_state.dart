@@ -5,7 +5,7 @@ class AuthState extends Equatable {
   final String loginError;
   final String password;
   final String passwordError;
-  final bool isLoginValid; // Бул жерде бар, жакшы
+  final bool isLoginValid;
 
   final String name;
   final String nameError;
@@ -41,30 +41,30 @@ class AuthState extends Equatable {
 
   @override
   List<Object?> get props => [
-        login,
-        loginError,
-        password,
-        passwordError,
-        isLoginValid, // МИНДЕТТҮҮ: Бул жерге кошуу керек!
-        name,
-        nameError,
-        surname,
-        surnameError,
-        phone,
-        phoneError,
-        confirmPassword,
-        confirmPasswordError,
-        errorMessage,
-        isLoading,
-        isSuccess,
-      ];
+    login,
+    loginError,
+    password,
+    passwordError,
+    isLoginValid,
+    name,
+    nameError,
+    surname,
+    surnameError,
+    phone,
+    phoneError,
+    confirmPassword,
+    confirmPasswordError,
+    errorMessage,
+    isLoading,
+    isSuccess,
+  ];
 
   AuthState copyWith({
     String? login,
     String? loginError,
     String? password,
     String? passwordError,
-    bool? isLoginValid, // МИНДЕТТҮҮ: copyWith ичине кошуу керек
+    bool? isLoginValid,
     String? name,
     String? nameError,
     String? surname,
@@ -82,7 +82,7 @@ class AuthState extends Equatable {
       loginError: loginError ?? this.loginError,
       password: password ?? this.password,
       passwordError: passwordError ?? this.passwordError,
-      isLoginValid: isLoginValid ?? this.isLoginValid, // Бул жерди жаңыртуу
+      isLoginValid: isLoginValid ?? this.isLoginValid,
       name: name ?? this.name,
       nameError: nameError ?? this.nameError,
       surname: surname ?? this.surname,
